@@ -1,14 +1,14 @@
 name := "SlickStudy"
 version := "1.0"
 
-resolvers += Resolver.sonatypeRepo("snapshots")
+//resolvers += Resolver.sonatypeRepo("snapshots")
 scalaVersion := "2.13.0"
 scalacOptions ++= Seq("-deprecation", "-feature")
 
 libraryDependencies += "com.datastax.oss" % "java-driver-core" % "4.0.1"
 libraryDependencies += "ch.qos.logback" % "logback-classic" % "1.3.0-alpha4"
 libraryDependencies +="com.typesafe" % "config" % "1.3.4"
-libraryDependencies +=  "com.typesafe.akka" %% "akka-actor" % "2.5.23"
+//libraryDependencies +=  "com.typesafe.akka" %% "akka-actor" % "2.5.23"
 
 libraryDependencies ++= Seq(
   "com.typesafe.slick" %% "slick" % "3.3.2",
