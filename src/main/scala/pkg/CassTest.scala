@@ -46,8 +46,8 @@ class CassTest {
         sugRp.foreach{
           u =>
             db.UserModel.insUser(u).onComplete {
-              case Success(s) => log.info(s"Successful id=$s")
-              case Failure(f) => log.info(s"XXXXXXXXXXXXXXXXX Failure cause=${f.getCause} msg=${f.getMessage} ")
+              case Success(_) => Unit
+              case Failure(f) => log.info(s"Failure cause=${f.getCause} msg=${f.getMessage} ")
             }
         }
     }

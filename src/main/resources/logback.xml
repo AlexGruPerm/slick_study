@@ -15,11 +15,12 @@
             </pattern>
         </encoder>
     </appender>
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
     </root>
-    <logger name="com.outworkers.phantom" level="INFO"/>
-    <logger name="com.datastax.driver.core" level="INFO"/>
-    <logger name="io.netty" level="INFO"/>
+    <logger name="com.outworkers.phantom" level="ERROR"/>
+    <logger name="com.datastax.driver.core" level="ERROR"/>
+    <logger name="io.netty" level="ERROR"/>
+    <logger name="org.cassandraunit" level="ERROR"/>
 </configuration>

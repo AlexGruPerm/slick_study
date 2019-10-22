@@ -4,7 +4,7 @@ import org.slf4j.LoggerFactory
 
 object SlickStudy extends App {
   val log = LoggerFactory.getLogger(getClass.getName)
-  val randomCntRows :Int =10000
+  val randomCntRows :Int =100000
     log.info("========================================== BEGIN ============================================")
 
     log.info("postgres")
