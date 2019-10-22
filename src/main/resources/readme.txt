@@ -40,3 +40,39 @@ create database prj;
 create user prj with encrypted password 'prj';
 grant all privileges on database prj to prj;
 
+
+
+
+
+
+drop table users;
+
+delete from users;
+
+select edomain,sum(1) as cnt from users group by edomain;
+
+select sum(1) as cnt from users;
+
+select * from users;
+
+
+
+
+
+drop table prj.users;
+
+create table prj.users(
+	id bigint,
+	name text,
+	email text,
+	edomain text,
+	primary key(id)
+);
+
+truncate prj.users;
+
+select * from prj.users;
+
+select min(id) from prj.users;
+
+select count(*) from prj.users;

@@ -9,10 +9,10 @@ import scala.concurrent.Future
 
 class UsersTable(tag: Tag) extends Table[PgUser](tag, "users") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-  def uname = column[String]("uname")
+  def name = column[String]("name")
   def email = column[String]("email")
   def edomain = column[String]("edomain")
-  def * = (id, uname, email, edomain).mapTo[PgUser]
+  def * = (id, name, email, edomain).mapTo[PgUser]
 }
 
 class PgSlickDriver(db :Database){
