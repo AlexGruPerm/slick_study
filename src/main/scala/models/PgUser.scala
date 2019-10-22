@@ -1,5 +1,6 @@
 package models
 
+import drivers.UsersTable
 import slick.lifted.TableQuery
 
 object T {

@@ -1,8 +1,10 @@
-package models
+package drivers
 
+import models.PgUser
 import org.slf4j.LoggerFactory
-import slick.lifted.{TableQuery, Tag}
 import slick.jdbc.PostgresProfile.api._
+import slick.lifted.{TableQuery, Tag}
+
 import scala.concurrent.Future
 
 class UsersTable(tag: Tag) extends Table[PgUser](tag, "users") {

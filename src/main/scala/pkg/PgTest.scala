@@ -1,10 +1,12 @@
 package pkg
 
-import models.{RandomData, PgSlickDriver, PgUser}
-import slick.jdbc.PostgresProfile.api._
+import drivers.PgSlickDriver
+import models.{PgUser, RandomPgData}
 import pkg.SlickStudy.log
-import scala.concurrent.duration._
+import slick.jdbc.PostgresProfile.api._
+
 import scala.concurrent.Await
+import scala.concurrent.duration._
 
 class PgTest {
 
@@ -24,13 +26,13 @@ class PgTest {
     Await.result(slickDrv.getAllUsers, defDuration).foreach(println)
     */
 
-    val rand = new RandomData
-    val su :Seq[PgUser] = (1 to 100).map(_ => rand.getRandomUser)
+    val rand = new RandomPgData
+    val su :Seq[PgUser] = (1 to 10000).map(_ => rand.getRandomUser).toSeq
     val resultInsertUser = slickDrv.insUsers(su)
     val t1 = System.currentTimeMillis
     val rowCount = Await.result(resultInsertUser, 5.minutes)
     val t2 = System.currentTimeMillis
-    log.info(s" Into table users inserted $rowCount rows with ${(t2-t1)} ms.")
+    log.info(s" Into postgres table users inserted $rowCount rows with ${(t2-t1)} ms.")
   }
 
 }
