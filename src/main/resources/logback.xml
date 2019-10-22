@@ -17,5 +17,8 @@
     </appender>
     <root level="INFO">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
     </root>
+    <logger name="com.outworkers.phantom" level="DEBUG"/>
+    <logger name="com.datastax.driver.core" level="DEBUG"/>
 </configuration>
