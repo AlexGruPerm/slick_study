@@ -1,50 +1,38 @@
 package pkg
 
-//import scala.concurrent._
-import com.outworkers.phantom.connectors.{CassandraConnection, ContactPoints}
-import com.outworkers.phantom.database.Database
-import models.CassUsers
 import pkg.SlickStudy.log
 
-/*
-import com.datastax.driver.core.SocketOptions
-import com.outworkers.phantom.database.Database
-import com.outworkers.phantom.dsl.{ContactPoints, _}
-import models.CassUsers
-import pkg.SlickStudy.log
-*/
-
-/*
-import com.outworkers.phantom.connectors.{CassandraConnection, ContactPoints}
-import com.typesafe.config.ConfigFactory
-import scala.collection.JavaConverters._
-
-import collection.JavaConverters._
-import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
+import scala.util.{Failure, Success}
+
+/*
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.duration.Duration
 */
-object Connector {
-  private val hosts = Seq("10.241.5.234")
-  private val keyspace = "prj"
-  lazy val connector: CassandraConnection = ContactPoints(hosts).keySpace(keyspace)
-}
 
-class MyDb(override val connector: CassandraConnection) extends Database[MyDb](Connector.connector) {
-  object users extends CassUsers with Connector{
-    override def tableName: String = "users"
-  }
-}
-
-object db extends MyDb(Connector.connector)
-
+/**
+ * In phantom-dsl "2.42.0"
+ * using old driver version, com.datastax.driver.core - DataStax Java driver 3.6.0 for Apache Cassandra
+ *
+*/
 class CassTest {
+  val db = CassDatabase
   def run ={
     log.info("CassTest.run")
-    val ue = db.users.getById(1L)
-    log.info(ue.toString)
-    //Await.result(Future.sequence(ue), 5.minutes).foreach(println)
+
+    //val userById :Future[Option[User]] = db.UserModel.getById(2L)
+    val userById = for {
+      res <- db.UserModel.getById(2L)
+    } yield res
+
+    userById.onComplete{
+      case Success(u) => u match {
+        case Some(su) => println(su)
+        case None => println("Successful executed query, user = None")
+      }
+      case Failure(f) => println(s"Failure cause=${f.getCause} msg=${f.getMessage} ")
+    }
+
+    db.session.close()
   }
 }
-
-

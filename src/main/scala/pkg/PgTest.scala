@@ -9,7 +9,7 @@ import scala.concurrent.Await
 class PgTest {
 
   def run ={
-    val pgdb = Database.forConfig("pgdb")
+    val pgdb :slick.jdbc.PostgresProfile.backend.Database = Database.forConfig("pgdb")
     val defDuration :Duration = 10.seconds
     val slickDrv = new PgSlickDriver(pgdb)
     /*

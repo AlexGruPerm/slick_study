@@ -4,21 +4,26 @@ import com.outworkers.phantom.dsl._
 import scala.concurrent.Future
 
 abstract class CassUsers extends Table[CassUsers, User] {
-  object id extends BigIntColumn with PartitionKey
-  object name extends StringColumn
-  object email extends StringColumn
-  object edomain extends StringColumn
 
-  override def fromRow(row: Row): User = {
-     User(
-      id(row),
-      name(row),
-      email(row),
-      edomain(row)
-    )
+  override def tableName: String = "users"
+
+  object id extends BigIntColumn with PartitionKey{
+    override lazy val name = "\"id\""
   }
 
-  def getById(id: BigInt): Future[Option[User]] = {
+  object name extends StringColumn{
+    override lazy val name = "\"name\""
+  }
+
+  object email extends StringColumn {
+    override lazy val name = "\"email\""
+  }
+
+  object edomain extends StringColumn{
+    override lazy val name = "\"edomain\""
+  }
+
+  def getById(id: Long): Future[Option[User]] = {
     select
       .where(_.id eqs id)
       .consistencyLevel_=(ConsistencyLevel.ONE)
@@ -27,9 +32,4 @@ abstract class CassUsers extends Table[CassUsers, User] {
 
 }
 
-abstract class UserExamples extends CassUsers {
-  override def getById(id: BigInt): Future[Option[User]] = {
-    select.where(_.id eqs id).one()
-  }
-}
 

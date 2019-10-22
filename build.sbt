@@ -9,7 +9,7 @@ lazy val Versions = new {
   val slick = "3.3.2"
 }
 
-//scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
+scalacOptions ++= Seq("-deprecation", "-feature", "-unchecked")
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
@@ -18,11 +18,12 @@ resolvers ++= Seq(
 )
 
 libraryDependencies ++= Seq(
+  "com.typesafe" % "config" % "1.3.4",
   "ch.qos.logback" % "logback-classic" % "1.3.0-alpha4",
-  "com.typesafe.slick" %% "slick" % Versions.slick,
-  "com.typesafe.slick" %% "slick-hikaricp" % Versions.slick,
   "org.postgresql" % "postgresql" % "42.2.5",
-  "com.outworkers"  %%  "phantom-dsl" % Versions.phantom
+  "com.outworkers"  %%  "phantom-dsl" % Versions.phantom,
+  "com.typesafe.slick" %% "slick" % Versions.slick,
+  "com.typesafe.slick" %% "slick-hikaricp" % Versions.slick
 )
 
 /*
