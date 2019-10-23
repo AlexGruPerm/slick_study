@@ -1,16 +1,15 @@
 package pkg
 
-import com.outworkers.phantom.ResultSet
 import models.{RandomCassData, User}
 import pkg.SlickStudy.log
 
+import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
 import scala.util.{Failure, Success}
 /*
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.Duration
+import scala.concurrent.duration._
 */
 
 /**
