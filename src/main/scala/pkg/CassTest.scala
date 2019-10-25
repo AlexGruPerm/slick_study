@@ -3,10 +3,9 @@ package pkg
 import models.{RandomCassData, User}
 import pkg.SlickStudy.log
 
-import scala.concurrent.Await
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
-import scala.util.{Failure, Success}
+import scala.concurrent.{Await, Future}
 /*
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
@@ -19,14 +18,17 @@ import scala.concurrent.duration._
 */
 class CassTest {
   val db = CassDatabase
+
+  def calcGroup(groupSeq :Seq[User]) :Future[Long] =
+    Future.sequence(groupSeq.map(u => db.UserModel.insUser(u))).map(v => v.size)
+
   def run(cntRow :Int) ={
     log.info("CassTest.run")
 
     Await.result(db.UserModel.createTableIfNex(), 5.seconds)
-    Await.result(db.UserModel.getAllUsers, 5.seconds).foreach(t => log.info(t.toString))
+    //Await.result(db.UserModel.getAllUsers, 5.seconds).foreach(t => log.info(t.toString))
     //Await.result(db.UserModel.deleteById(1L), 3.seconds)
-    Await.result(db.UserModel.getAllUsers, 5.seconds).foreach(t => log.info(t.toString))
-
+    //Await.result(db.UserModel.getAllUsers, 5.seconds).foreach(t => log.info(t.toString))
 
     //val rand = new RandomPgData
     //val su :IndexedSeq[Seq[Serializable]] = (1 to 100).map(_ => rand.getRandomCassUser)
@@ -34,27 +36,30 @@ class CassTest {
     val userById = db.UserModel.getById(2L).map(r => r)
     */
 
-    val groupRowCnt :Int = 200
+    val groupRowCnt :Int = 1000
     val rand = new RandomCassData
-    val sequ :Seq[User] = (1 to cntRow).map(thisUserId => rand.getRandomUser(thisUserId)).sortBy(tu => tu.id)
-    log.info(s"Total users size ${sequ.size}")
+    val seqUsers :Seq[User] = (1 to cntRow).map(thisUserId => rand.getRandomUser(thisUserId))
+    log.info(s"Total users size ${seqUsers.size}")
     val t1 = System.currentTimeMillis
 
-      sequ.grouped(groupRowCnt).foreach{
-      sugRp =>
-        sugRp.foreach{
-          u =>
-            db.UserModel.insUser(u).onComplete {
-              case Success(_) => Unit
-              case Failure(f) => log.info(s"Failure cause=${f.getCause} msg=${f.getMessage} ")
-            }
+    val r :Future[Long] = seqUsers.grouped(groupRowCnt).foldLeft(Future.successful(0L)){
+      (acc :Future[Long], num :Seq[User]) => {
+        acc.flatMap{
+          accInt => calcGroup(num).map(_ + accInt)
         }
+      }
     }
+      /*.onComplete{
+      case Success(s) => log.info(s"Success inserted $s rows.")
+      case Failure(f) => log.info(s"Failure cause=${f.getCause} msg=${f.getMessage} ")
+    }
+    */
+
+    Await.result(r,5.minutes)
 
     val t2 = System.currentTimeMillis
-    log.info(s" Into cassandra table users inserted X rows with ${(t2-t1)} ms.")
+    log.info(s" Into cassandra table users inserted XXX rows with ${(t2-t1)} ms.")
 
-    Thread.sleep(25000)
     //db.session.close()
   }
 }

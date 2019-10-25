@@ -14,6 +14,6 @@ object Connector {
     .setCoreConnectionsPerHost(HostDistance.LOCAL, 200)
 
   lazy val connector: CassandraConnection = ContactPoints(hosts)
-    .noHeartbeat().withClusterBuilder(_.withPoolingOptions(poolingOptions))
+    //.noHeartbeat().withClusterBuilder(_.withPoolingOptions(poolingOptions))
     .keySpace(keyspace)
 }

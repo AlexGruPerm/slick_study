@@ -1,8 +1,6 @@
 package models
 
-case class User(
-                 id: Long,//BigInt
-                 name: String,
-                 email: String,
-                 edomain: String
-               )
+case class User(id: Long,
+                name: String,
+                email: String,
+                edomain: String)

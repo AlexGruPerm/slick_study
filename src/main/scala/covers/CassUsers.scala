@@ -51,8 +51,7 @@ abstract class CassUsers extends Table[CassUsers, User] with RootConnector {
       .value(_.edomain, u.edomain)
       .consistencyLevel_=(ConsistencyLevel.ALL)
       .ifNotExists()
-      .future().map(_ => u.id)
-
+      .future().map(_ => 1L/*u.id*/)
 }
 
 
