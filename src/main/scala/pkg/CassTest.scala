@@ -55,7 +55,7 @@ class CassTest {
     }
     */
 
-    Await.result(r,5.minutes)
+    Await.result(r,20.minutes)
 
     val t2 = System.currentTimeMillis
     log.info(s" Into cassandra table users inserted XXX rows with ${(t2-t1)} ms.")
@@ -73,3 +73,4 @@ userById.onComplete{
   case Failure(f) => println(s"Failure cause=${f.getCause} msg=${f.getMessage} ")
 }
 */
+
